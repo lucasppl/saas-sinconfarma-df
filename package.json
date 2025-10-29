@@ -1,0 +1,24 @@
+{
+  "name": "saas-sinprodf",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/lucasppl/saas-sinprodf#readme",
+  "bugs": {
+    "url": "https://github.com/lucasppl/saas-sinprodf/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lucasppl/saas-sinprodf.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "compile:sass": "sass style/login-page.scss style/style.css",
+    "watch:sass": "sass style/login-page.scss style/style.css -w"
+  },
+  "devDependencies": {
+    "sass": "^1.93.2"
+  }
+}
