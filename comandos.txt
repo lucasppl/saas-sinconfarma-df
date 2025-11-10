@@ -1,0 +1,8 @@
+criar migração:
+npm run migrate:create <nome>
+
+editar:
+ir no código .js criado escreva o código up e down (com pgm.createTable, etc.).
+
+executar na pasta raiz do projeto:
+docker compose --env-file .env run --rm backend npm run migrate:up

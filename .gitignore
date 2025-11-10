@@ -1,1 +1,35 @@
-node_modules
+# Node.js modules (will be installed inside the container)
+node_modules/
+
+# Git files
+.git
+.gitignore
+
+# Docker files
+Dockerfile
+.dockerignore
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables (should be passed as build arguments or environment variables)
+.env
+.env.local
+.env.*.local
+
+# Build artifacts (if not intended to be part of the final image)
+dist/
+build/
+
+# IDE files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS generated files
+.DS_Store
+Thumbs.db
