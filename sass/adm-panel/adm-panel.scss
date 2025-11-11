@@ -1,0 +1,86 @@
+// ----------------------
+// VARIÁVEIS
+// ----------------------
+$primary: #2a9d8f;
+$secondary: #264653;
+$light: #f8f9fa;
+$dark: #1c1c1c;
+$shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+// ----------------------
+// ESTILOS GERAIS
+// ----------------------
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: $light;
+  color: $dark;
+}
+
+.sidebar {
+  width: 230px;
+  min-height: 100vh;
+  position: fixed;
+
+  .nav-link {
+    border-radius: 0.5rem;
+    margin-bottom: 0.5rem;
+    transition: all 0.2s ease;
+
+    i { margin-right: 8px; }
+
+    &.active, &:hover {
+      background-color: $primary;
+      color: #fff !important;
+    }
+  }
+}
+
+.content {
+  margin-left: 230px;
+  min-height: 100vh;
+  background-color: #fff;
+}
+
+.navbar {
+  box-shadow: $shadow;
+}
+
+// ----------------------
+// COMPONENTES
+// ----------------------
+.card-custom {
+  background-color: #fff;
+  border: none;
+  border-radius: 1rem;
+  box-shadow: $shadow;
+  padding: 1.5rem;
+  transition: transform 0.2s ease;
+
+  h6 {
+    font-weight: 600;
+    color: $secondary;
+  }
+
+  &:hover {
+    transform: translateY(-3px);
+  }
+
+  &.success { border-left: 5px solid #2a9d8f; }
+  &.info { border-left: 5px solid #00b4d8; }
+  &.warning { border-left: 5px solid #e76f51; }
+}
+
+// Tabela
+.table {
+  background-color: #fff;
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+// Botões
+.btn-primary {
+  background-color: $primary;
+  border-color: $primary;
+  &:hover { background-color: darken($primary, 8%); }
+}
