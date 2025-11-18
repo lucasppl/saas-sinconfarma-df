@@ -10,7 +10,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = process.env.PORT || 8000;
+// Use a variável de ambiente para a porta, com 8000 como padrão
+const PORT = process.env.BACKEND_PORT || 8000;
 
 // Configuração da Conexão com o Banco
 const pool = new Pool({
@@ -22,10 +23,12 @@ const pool = new Pool({
   ssl: false
 });
 
-// Middleware para entender
+// Middleware para entender JSON
 app.use(express.json());
 
 app.use(cors());
+
+// --- ROTAS DE AUTENTICAÇÃO ---
 
 app.post('/api/login', async (req, res) => {
   const { email, senha } = req.body;
@@ -41,6 +44,7 @@ app.post('/api/login', async (req, res) => {
         u.nome,
         u.email,
         u.senha_hash,
+        u.ativo, -- Adicionado para o frontend saber o status
         r.nome AS role_nome
       FROM
         usuarios u
@@ -56,6 +60,10 @@ app.post('/api/login', async (req, res) => {
       return res.status(401).json({ error: 'Usuário ou senha inválidos' });
     }
     const user = result.rows[0];
+
+    if (!user.ativo) {
+      return res.status(403).json({ error: 'Este usuário está inativo.' });
+    }
 
     // Compara a senha do formulário com o HASH do banco
     const senhaValida = await bcrypt.compare(senha, user.senha_hash);
@@ -95,7 +103,8 @@ app.get('/api/db-test', async (req, res) => {
   }
 });
 
-// Rota da API para buscar usuários com roles
+// --- ROTAS DE USUÁRIOS (CRUD) ---
+
 app.get('/api/usuarios', async (req, res) => {
   try {
     const sql = `
@@ -103,6 +112,7 @@ app.get('/api/usuarios', async (req, res) => {
         usuarios.id,
         usuarios.nome,
         usuarios.email,
+        usuarios.ativo, -- *** ATUALIZADO: envia o 'ativo' para o frontend ***
         roles.nome AS role_nome
       FROM
         usuarios
@@ -121,39 +131,29 @@ app.get('/api/usuarios', async (req, res) => {
 });
 
 app.post('/api/usuarios', async (req, res) => {
-  // Pega os dados do corpo (body) da requisição (o que o frontend enviou)
-  console.log('--- ROTA POST /api/usuarios INICIADA ---'); // <-- LOG 1
   const { nome, email, senha, role_id } = req.body;
-  console.log('Dados recebidos:', req.body); // <-- LOG 2
 
   // Validação
   if (!nome || !email || !senha || !role_id) {
     return res.status(400).json({ error: 'Todos os campos são obrigatórios' });
   }
-  // *** NOVA VALIDAÇÃO ADICIONADA ***
-  // Garante que a senha é uma string antes de tentar o hash
   if (typeof senha !== 'string' || senha.length === 0) {
     return res.status(400).json({ error: 'O campo "senha" deve ser uma string válida.' });
   }
-  // *** FIM DA NOVA VALIDAÇÃO ***
 
   try {
-    console.log('Entrou no TRY. Vai tentar o hash...'); // <-- LOG 3
     const hashDaSenha = await bcrypt.hash(senha, 10);
-    console.log('Hash criado com sucesso.'); // <-- LOG 4
 
     // Inserir no banco de dados
-    // salvamos o HASH, não a senha pura
+    // A coluna 'ativo' não é necessária aqui, pois a migration
+    // define 'default: true'
     const sql = `
       INSERT INTO usuarios (nome, email, senha_hash, role_id)
       VALUES ($1, $2, $3, $4)
-      RETURNING id, nome, email, role_id, criado_em
-    `; // RETURNING nos devolve o usuário recém-criado
+      RETURNING id, nome, email, role_id, criado_em, ativo
+    `;
 
-    console.log('Vai tentar inserir no banco...'); // <-- LOG 5
     const { rows } = await pool.query(sql, [nome, email, hashDaSenha, role_id]);
-    console.log('Inserido no banco com sucesso.'); // <-- LOG 6
-
 
     // Devolver o novo usuário para o frontend
     const novoUsuario = rows[0];
@@ -164,19 +164,55 @@ app.post('/api/usuarios', async (req, res) => {
     if (err.code === '23505') {
       return res.status(409).json({ error: 'Este e-mail já está em uso.' });
     }
-    // *** ESTE É O LOG MAIS IMPORTANTE ***
-    console.error('--- ERRO CAPTURADO NO CATCH ---');
-    console.error('Mensagem:', err.message);
-    console.error('Código do Erro:', err.code);
-    console.error('Stack Trace:', err.stack);
-    console.error('Objeto de Erro Completo:', err);
+    console.error('Erro ao criar usuário:', err);
     res.status(500).json({ error: 'Erro interno ao criar usuário.' });
   }
 });
 
+app.delete('/api/usuarios/:id', async (req, res) => {
+  const { id } = req.params; // Pega o ID da URL (ex: /api/usuarios/5)
+
+  try {
+    const sql = 'DELETE FROM usuarios WHERE id = $1 RETURNING *';
+    const { rows } = await pool.query(sql, [id]);
+
+    if (rows.length === 0) {
+      // Se não encontrou ninguém com esse ID
+      return res.status(404).json({ error: 'Usuário não encontrado.' });
+    }
+
+    return res.status(200).json({
+      message: `Usuário "${rows[0].nome}" (ID: ${id}) excluído com sucesso.`
+    });
+
+  } catch (err) {
+    if (err.code === '23503') {
+       return res.status(409).json({ error: 'Este usuário não pode ser excluído pois está ligado a outros registros.' });
+    }
+    console.error('Erro ao excluir usuário:', err);
+    res.status(500).json({ error: 'Erro interno ao excluir usuário.' });
+  }
+});
+
+
 app.get('/api/farmacias', async (req, res) => {
   try {
-    const { rows } = await pool.query('SELECT * FROM farmacias ORDER BY nome');
+    const sql = `
+      SELECT
+        id,
+        nome,
+        endereco,
+        telefone,
+        cnpj,
+        url_logo,
+        horario_funcionamento,
+        nota_media,
+        latitude,
+        longitude
+      FROM farmacias
+      ORDER BY nome
+    `;
+    const { rows } = await pool.query(sql);
     res.json(rows); // Devolve a lista de farmácias como JSON
   } catch (err) {
     console.error('Erro ao buscar farmácias:', err);

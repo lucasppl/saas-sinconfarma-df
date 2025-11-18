@@ -1,0 +1,86 @@
+@use "sass:color";
+
+$primary: #2a9d8f;
+$secondary: #264653;
+$light: #f8f9fa;
+$dark: #1c1c1c;
+$shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: $light;
+  color: $dark;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+.navbar {
+  box-shadow: $shadow;
+  background-color: #fff;
+
+  .btn-outline-danger {
+    font-weight: 500;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background-color: $primary;
+      border-color: $primary;
+      color: #fff;
+    }
+
+    i {
+      font-size: 1rem;
+    }
+  }
+}
+
+
+main {
+  min-height: 100vh;
+}
+
+.card {
+  border: none;
+  border-radius: 0.75rem;
+  box-shadow: $shadow;
+}
+
+.table {
+  background-color: #fff;
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.btn-primary {
+  background-color: $primary;
+  border-color: $primary;
+
+  &:hover {
+    background-color: color.adjust($primary, $lightness: -8%);
+  }
+}
+
+@media (max-width: 768px) {
+  form .row > div {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+
+  form button {
+    margin-top: 0.5rem;
+  }
+
+  .container {
+    padding: 1rem !important;
+  }
+
+  .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
