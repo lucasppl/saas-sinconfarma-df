@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 /**
  * @type {import('node-pg-migrate').ColumnDefinitions | undefined}
  */
@@ -9,7 +11,9 @@ export const shorthands = undefined;
  * @returns {Promise<void> | void}
  */
 export const up = (pgm) => {
-    console.log("Rodando migração UP: criando 'farmacias'...");
+    console.log("Rodando migração UP: criando 'farmacias' (VERSÃO ORIGINAL)...");
+
+    // Versão Original da Tabela
     pgm.createTable("farmacias", {
         id: "id",
         nome: { type: "varchar(100)", notNull: true },
@@ -28,6 +32,7 @@ export const up = (pgm) => {
         },
     });
 
+    // POVOAMENTO ORIGINAL
     pgm.sql(`
         INSERT INTO farmacias (nome, endereco, telefone, cnpj)
         VALUES

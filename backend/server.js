@@ -112,7 +112,8 @@ app.get('/api/usuarios', async (req, res) => {
         usuarios.id,
         usuarios.nome,
         usuarios.email,
-        usuarios.ativo, -- *** ATUALIZADO: envia o 'ativo' para o frontend ***
+        usuarios.telefone,
+        usuarios.ativo,
         roles.nome AS role_nome
       FROM
         usuarios
@@ -144,16 +145,19 @@ app.post('/api/usuarios', async (req, res) => {
   try {
     const hashDaSenha = await bcrypt.hash(senha, 10);
 
+    // Converte string vazia de telefone para NULL antes de inserir
+    const telefoneParaDB = telefone === '' ? null : telefone;
+
     // Inserir no banco de dados
     // A coluna 'ativo' não é necessária aqui, pois a migration
     // define 'default: true'
     const sql = `
-      INSERT INTO usuarios (nome, email, senha_hash, role_id)
-      VALUES ($1, $2, $3, $4)
-      RETURNING id, nome, email, role_id, criado_em, ativo
+      INSERT INTO usuarios (nome, email, senha_hash, role_id, telefone)
+      VALUES ($1, $2, $3, $4, $5)
+      RETURNING id, nome, email, role_id, criado_em, ativo, telefone
     `;
 
-    const { rows } = await pool.query(sql, [nome, email, hashDaSenha, role_id]);
+    const { rows } = await pool.query(sql, [nome, email, hashDaSenha, role_id, telefoneParaDB]);
 
     // Devolver o novo usuário para o frontend
     const novoUsuario = rows[0];
@@ -166,6 +170,77 @@ app.post('/api/usuarios', async (req, res) => {
     }
     console.error('Erro ao criar usuário:', err);
     res.status(500).json({ error: 'Erro interno ao criar usuário.' });
+  }
+});
+
+// --- ROTA PUT (EDITAR USUÁRIO) ---
+app.put('/api/usuarios/:id', async (req, res) => {
+  const { id } = req.params;
+  // O frontend pode enviar nome, email, role_id, e ativo.
+  const { nome, email, role_id, ativo, telefone } = req.body;
+
+  if (!id) {
+    return res.status(400).json({ error: 'ID do usuário é obrigatório.' });
+  }
+
+  // Monta a query dinamicamente apenas com os campos que vieram no body
+  let updateFields = [];
+  let updateValues = [];
+  let paramCount = 1;
+
+  if (nome !== undefined) {
+    updateFields.push(`nome = $${paramCount++}`);
+    updateValues.push(nome);
+  }
+  if (email !== undefined) {
+    updateFields.push(`email = $${paramCount++}`);
+    updateValues.push(email);
+  }
+  if (role_id !== undefined) {
+    updateFields.push(`role_id = $${paramCount++}`);
+    updateValues.push(role_id);
+  }
+  if (ativo !== undefined) {
+    updateFields.push(`ativo = $${paramCount++}`);
+    updateValues.push(ativo);
+  }
+  if (telefone !== undefined) {
+    updateFields.push(`telefone = $${paramCount++}`);
+    // Se o frontend mandar "", salvamos NULL no banco
+    updateValues.push(telefone === '' ? null : telefone);
+  }
+
+  // Se nada foi enviado, retorna erro
+  if (updateFields.length === 0) {
+    return res.status(400).json({ error: 'Nenhum campo para atualização foi fornecido.' });
+  }
+
+  // Adiciona o ID do usuário como último parâmetro
+  updateValues.push(id);
+
+  const sql = `
+    UPDATE usuarios
+    SET ${updateFields.join(', ')}, atualizado_em = current_timestamp
+    WHERE id = $${paramCount}
+    RETURNING id, nome, email, role_id, ativo, telefone;
+  `;
+
+  try {
+    const { rows } = await pool.query(sql, updateValues);
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: 'Usuário não encontrado.' });
+    }
+
+    return res.status(200).json(rows[0]);
+
+  } catch (err) {
+    // E-mail duplicado
+    if (err.code === '23505') {
+      return res.status(409).json({ error: 'Este e-mail já está em uso por outro usuário.' });
+    }
+    console.error('Erro ao atualizar usuário:', err);
+    res.status(500).json({ error: 'Erro interno ao atualizar usuário.' });
   }
 });
 
