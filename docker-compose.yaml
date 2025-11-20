@@ -16,6 +16,7 @@ services:
     restart: unless-stopped
 
   backend:
+    command: sh -c "npm run migrate && npm run dev"
     build:
       context: ./backend
       dockerfile: Dockerfile

@@ -33,11 +33,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await response.json();
 
             if (response.ok) {
+
+                localStorage.setItem('usuario', JSON.stringify(data.usuario));
+
                 mensagemDiv.textContent = `Login bem-sucedido! Bem-vindo(a), ${data.usuario.nome}.`;
                 mensagemDiv.classList.add('text-success');
 
                 setTimeout(() => {
-                    window.location.href = 'usuarios.html';
+                    window.location.href = 'usuario.html';
                 }, 1500);
 
             } else {

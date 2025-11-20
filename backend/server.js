@@ -194,6 +194,34 @@ app.delete('/api/usuarios/:id', async (req, res) => {
   }
 });
 
+app.get('/api/usuarios/:id', async (req, res) => {
+  try {
+    const sql = `
+      SELECT 
+        usuarios.id,
+        usuarios.nome,
+        usuarios.email,
+        usuarios.ativo,
+        roles.nome AS role_nome
+      FROM usuarios
+      INNER JOIN roles ON usuarios.role_id = roles.id
+      WHERE usuarios.id = $1
+      LIMIT 1;
+    `;
+
+    const result = await pool.query(sql, [req.params.id]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "Usuário não encontrado" });
+    }
+
+    res.json(result.rows[0]);
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Erro ao buscar usuário" });
+  }
+});
 
 app.get('/api/farmacias', async (req, res) => {
   try {
