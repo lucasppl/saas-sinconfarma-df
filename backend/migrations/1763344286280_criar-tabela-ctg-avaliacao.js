@@ -1,28 +1,36 @@
+/* eslint-disable camelcase */
+
 /**
  * @type {import('node-pg-migrate').ColumnDefinitions | undefined}
  */
 export const shorthands = undefined;
+
 /**
  * @param pgm {import('node-pg-migrate').MigrationBuilder}
  * @param run {() => void | undefined}
  * @returns {Promise<void> | void}
  */
 export const up = (pgm) => {
-    console.log('Rodabo migração UP: criando tabela categoria avaliacao');
+  console.log("Rodando migração UP: criando tabela 'categorias_avaliacao' e povoando...");
 
-    pgm.createTable('categoria_avaliacao', {
-        id: "id",
-        nome: {type: 'varchar(100)', notNull: true},
-        descricao: {type: 'text'},
-        ordem: {type: 'integer'},
-    });
+  // 1. Tabela para os CATEGORIAS de avaliação (ex: "Letreiro/Marquise", "Gôndolas")
+  pgm.createTable("categorias_avaliacao", {
+    id: "id",
+    nome_categoria: { type: "varchar(100)", notNull: true },
+    ordem: { type: "integer", notNull: true },
+  });
 
-    pgm.sql(`
-        INSERT INTO "categoria_avaliacao" (nome, ordem) VALUES
-        ('Atendimento da Loja', 1),
-        ('Gôndolas', 2),
-        ('Atendimento', 3);
-    `);
+  // POVOAR (Seeding): Insere as 6 categorias de avaliação que serão referenciadas
+  // *** CORRIGIDO: O INSERT usa nome_categoria ***
+  pgm.sql(`
+    INSERT INTO "categorias_avaliacao" (nome_categoria, ordem) VALUES
+    ('Letreiro/Marquise', 1),
+    ('Loja (Geral)', 2),
+    ('Gôndolas', 3),
+    ('Colaboradores Balcão', 4),
+    ('Colaboradores Salão', 5),
+    ('Colaboradores Caixa', 6);
+  `);
 };
 
 /**
@@ -31,6 +39,6 @@ export const up = (pgm) => {
  * @returns {Promise<void> | void}
  */
 export const down = (pgm) => {
-    console.log("Rodando migração DOWN: removendo tabela categoria avaliacao...");
-    pgm.dropTable('categoria_avaliacao');
+  console.log("Rodando migração DOWN: removendo 'categorias_avaliacao'...");
+  pgm.dropTable("categorias_avaliacao");
 };

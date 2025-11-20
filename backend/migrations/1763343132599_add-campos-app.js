@@ -12,7 +12,11 @@ export const up= (pgm) => {
 
     pgm.addColumn('usuarios', {
         url_avatar: {type: 'text'},
+<<<<<<< HEAD
         telefone: {type: 'varchar(20)'}
+=======
+        telefone: {type: 'varchar(20)'},
+>>>>>>> 46265812508483d93b82d53495c5bc7b5f7d9f4a
     });
 
     pgm.addColumns('farmacias', {
