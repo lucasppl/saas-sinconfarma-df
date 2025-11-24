@@ -1,0 +1,250 @@
+ * {
+     margin: 0;
+     padding: 0;
+     box-sizing: border-box;
+ }
+
+ body {
+     background: linear-gradient(135deg, #2f7ef7 0%, #1e5bc9 100%);
+     min-height: 100vh;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+     padding: 20px;
+ }
+
+ .container-form {
+     background: white;
+     border-radius: 20px;
+     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+     padding: 40px 30px;
+     max-width: 500px;
+     width: 100%;
+     animation: slideUp 0.5s ease-out;
+ }
+
+ @keyframes slideUp {
+     from {
+         opacity: 0;
+         transform: translateY(30px);
+     }
+
+     to {
+         opacity: 1;
+         transform: translateY(0);
+     }
+ }
+
+ .step-indicator {
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     margin-bottom: 30px;
+ }
+
+ .step-circle {
+     width: 50px;
+     height: 50px;
+     border-radius: 50%;
+     background: linear-gradient(135deg, #2f7ef7 0%, #1e5bc9 100%);
+     color: white;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     font-weight: bold;
+     font-size: 20px;
+ }
+
+ .step-text {
+     margin-left: 15px;
+     font-size: 14px;
+     color: #6c757d;
+ }
+
+ h1 {
+     padding-top: 15px;
+     text-align: center;
+     color: #333;
+     margin-bottom: 10px;
+     font-size: 28px;
+     font-weight: 700;
+ }
+
+ .emoji-large {
+     font-size: 80px;
+     text-align: center;
+     margin: 30px 0;
+     animation: bounce 2s infinite;
+ }
+
+ @keyframes bounce {
+
+     0%,
+     100% {
+         transform: translateY(0);
+     }
+
+     50% {
+         transform: translateY(-10px);
+     }
+ }
+
+ .form-group {
+     margin-bottom: 25px;
+ }
+
+ .form-label {
+     font-weight: 600;
+     color: #333;
+     margin-bottom: 12px;
+     display: block;
+     font-size: 16px;
+ }
+
+ .file-input-wrapper {
+     position: relative;
+     display: inline-block;
+     width: 100%;
+ }
+
+ .file-input-wrapper input[type="file"] {
+     display: none;
+ }
+
+ .file-input-label {
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     padding: 40px 20px;
+     border: 2px dashed #2f7ef7;
+     border-radius: 12px;
+     cursor: pointer;
+     transition: all 0.3s ease;
+     background: #fafafa;
+     font-weight: 600;
+     color: #2f7ef7;
+ }
+
+ .file-input-label:hover {
+     background: #e8f1fe;
+     border-color: #2f7ef7;
+     color: #2f7ef7;
+ }
+
+ .file-input-label.active {
+     background: #e8f1fe;
+     border-color: #28a745;
+     color: #28a745;
+ }
+
+ .file-preview {
+     margin-top: 15px;
+     border-radius: 12px;
+     overflow: hidden;
+     display: none;
+ }
+
+ .file-preview.show {
+     display: block;
+ }
+
+ .file-preview img {
+     width: 100%;
+     height: auto;
+     object-fit: cover;
+     max-height: 300px;
+ }
+
+ .file-preview-actions {
+     display: none;
+     margin-top: 15px;
+     gap: 10px;
+ }
+
+ .file-preview-actions.show {
+     display: flex;
+ }
+
+ .btn-remove {
+     flex: 1;
+     padding: 10px;
+     background: #f53939;
+     color: white;
+     border: none;
+     border-radius: 8px;
+     font-weight: 600;
+     cursor: pointer;
+     transition: all 0.2s;
+ }
+
+ .btn-remove:hover {
+     background: #f35b5b;
+     transform: translateY(-1px);
+ }
+
+ .btn-next {
+     width: 100%;
+     padding: 14px;
+     background: linear-gradient(135deg, #2f7ef7 0%, #1e5bc9 100%);
+     color: white;
+     border: none;
+     border-radius: 10px;
+     font-weight: 600;
+     font-size: 16px;
+     cursor: pointer;
+     transition: transform 0.2s, box-shadow 0.2s;
+     margin-top: 20px;
+ }
+
+ .btn-next:hover {
+     transform: translateY(-2px);
+     box-shadow: 0 10px 25px rgba(47, 126, 247, 0.4);
+ }
+
+ .btn-next:disabled {
+     opacity: 0.5;
+     cursor: not-allowed;
+     transform: none;
+ }
+
+ .description-text {
+     text-align: center;
+     color: #6c757d;
+     font-size: 15px;
+     margin-bottom: 20px;
+     line-height: 1.5;
+ }
+
+.description-text2 {
+     text-align: center;
+     color: #6c757d;
+     font-size: 12px;
+     margin-bottom: 20px;
+     line-height: 1.5;
+ }
+
+ @media (max-width: 576px) {
+     .container-form {
+         padding: 25px 20px;
+         border-radius: 15px;
+     }
+
+     h1 {
+        padding-top: 20px;
+        font-size: 24px;
+     }
+
+     .emoji-large {
+         font-size: 60px;
+         margin: 20px 0;
+     }
+
+     .step-indicator {
+         margin-bottom: 20px;
+     }
+
+     .file-input-label {
+         padding: 30px 15px;
+     }
+ }

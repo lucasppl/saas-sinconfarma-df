@@ -132,7 +132,7 @@ app.get('/api/usuarios', async (req, res) => {
 });
 
 app.post('/api/usuarios', async (req, res) => {
-  const { nome, email, senha, role_id } = req.body;
+  const { nome, email, senha, role_id, telefone } = req.body;
 
   // Validação
   if (!nome || !email || !senha || !role_id) {
@@ -276,6 +276,7 @@ app.get('/api/usuarios/:id', async (req, res) => {
         usuarios.id,
         usuarios.nome,
         usuarios.email,
+        usuarios.telefone,
         usuarios.ativo,
         roles.nome AS role_nome
       FROM usuarios
