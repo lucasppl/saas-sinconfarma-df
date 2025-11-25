@@ -1,0 +1,160 @@
+@use "sass:color";
+
+$primary-color: #2962ff;
+$primary-light: #6690ff;
+$white: #ffffff;
+$text-light: rgba(255, 255, 255, 0.8);
+$shadow: rgba(0, 0, 0, 0.1);
+
+@mixin flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@mixin button-base {
+    width: 100%;
+    padding: 16px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    
+    &:active {
+        transform: scale(0.98);
+    }
+}
+
+// Reset
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    background: linear-gradient(135deg, $primary-color 0%, #1e4ed8 100%);
+    min-height: 100vh;
+    @include flex-center;
+}
+
+// Container
+.container {
+    width: 100%;
+    max-width: 400px;
+    padding: 40px 20px;
+    @include flex-center;
+    flex-direction: column;
+}
+
+// Profile
+.profile {
+    text-align: center;
+    margin-bottom: 60px;
+    
+    &__avatar {
+        width: 120px;
+        height: 120px;
+        margin: 0 auto 24px;
+        border-radius: 50%;
+        background: $white;
+        padding: 4px;
+        box-shadow: 0 4px 12px $shadow;
+        
+        img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            background: linear-gradient(135deg, #ffa751 0%, #ff6b6b 100%);
+        }
+    }
+    
+    &__name {
+        color: $white;
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 16px;
+    }
+    
+    &__info {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        
+        p {
+            color: $text-light;
+            font-size: 14px;
+            @include flex-center;
+            gap: 8px;
+        }
+    }
+}
+
+// Icon
+.icon {
+    width: 16px;
+    height: 16px;
+    stroke-width: 2;
+}
+
+// Actions
+.actions {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+// Buttons
+.btn {
+    @include button-base;
+    @include flex-center;
+    gap: 8px;
+    
+    &--primary {
+        background: $primary-light;
+        color: $white;
+        
+        &:hover {
+            background: lighten($primary-light, 5%);
+        }
+    }
+    
+    &--secondary {
+        background: $white;
+        color: $primary-color;
+        
+        &:hover {
+            background: color.adjust($white, $lightness: 5%);
+        }
+    }
+    
+    &__icon {
+        width: 20px;
+        height: 20px;
+        stroke-width: 2.5;
+    }
+}
+
+.btn--secondary {
+  color: black;
+}
+
+// Responsive
+@media (max-width: 480px) {
+    .container {
+        padding: 20px;
+    }
+    
+    .profile {
+        margin-bottom: 40px;
+        
+        &__name {
+            font-size: 22px;
+        }
+    }
+}
