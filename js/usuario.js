@@ -59,6 +59,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         ${usuario.telefone ? formatTelefone(usuario.telefone) : 'Telefone não cadastrado'}
     `;
 
+    document.querySelector('.btn--primary').addEventListener('click', () => {
+        window.location.href = './forms/add-foto.html'
+    });
+
     // Logout
     document.querySelector('.btn--secondary').addEventListener('click', () => {
         localStorage.removeItem('usuario');

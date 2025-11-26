@@ -1,0 +1,98 @@
+.container-form {
+  max-width: 850px;
+  margin: 40px auto;
+  padding: 1rem;
+}
+.container-form .title {
+  color: #0d5c3d;
+  font-weight: 700;
+  font-size: 1.9rem;
+  text-align: center;
+  margin-bottom: 0.3rem;
+}
+.container-form .description-text {
+  text-align: center;
+  color: #666;
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+}
+
+.question-card {
+  background: #fff;
+  border-radius: 18px;
+  padding: 1.8rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+}
+.question-card .question-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0d5c3d;
+  margin-bottom: 1rem;
+}
+.question-card label {
+  font-weight: 600;
+  color: #666;
+  font-size: 1rem;
+  margin-bottom: 0.3rem;
+  display: block;
+}
+
+.emoji-options {
+  display: flex;
+  gap: 1.2rem;
+  justify-content: center;
+  margin-bottom: 1rem;
+  margin-top: 0.4rem;
+}
+.emoji-options .emoji-btn {
+  font-size: 2.3rem;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.emoji-options .emoji-btn:hover {
+  transform: scale(1.14);
+}
+.emoji-options .emoji-btn.selected {
+  transform: scale(1.25);
+}
+
+.btn-next {
+  width: 100%;
+  margin-top: 1.8rem;
+  padding: 0.9rem;
+  background: #14784c;
+  border-radius: 14px;
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: 0.25s ease;
+  cursor: pointer;
+}
+.btn-next:hover {
+  background: #0d5c3d;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .question-card {
+    padding: 1.3rem;
+  }
+  .emoji-options .emoji-btn {
+    font-size: 2rem;
+  }
+}
+@media (max-width: 480px) {
+  .container-form {
+    margin: 20px;
+  }
+  .emoji-options {
+    gap: 1rem;
+  }
+  .emoji-options .emoji-btn {
+    font-size: 1.8rem;
+  }
+}
+
+/*# sourceMappingURL=questionario.css.map */

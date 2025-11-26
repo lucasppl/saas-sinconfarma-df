@@ -57,5 +57,6 @@ function removePhoto(e) {
 
 submitBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    alert('Foto enviada! Próxima etapa em desenvolvimento.');
+    alert('Foto enviada!');
+    window.location.href = 'inserirCnpj.html';
 });

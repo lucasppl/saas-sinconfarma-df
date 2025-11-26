@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliação — Questionário</title>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Reutilize o mesmo CSS da tela inicial -->
+    <link rel="stylesheet" href="../../style/addPhoto.css">
+
+    <style>
+        /* Ajustes extras específicos do questionário */
+        .question-card {
+            background: #fff;
+            border-radius: 18px;
+            padding: 1.6rem;
+            margin-bottom: 1.4rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+        }
+
+        .question-title {
+            font-weight: 700;
+            color: #0d5c3d;
+            margin-bottom: .6rem;
+        }
+
+        .emoji-options {
+            display: flex;
+            gap: 1.2rem;
+            margin-top: .8rem;
+            justify-content: center;
+        }
+
+        .emoji-btn {
+            font-size: 2.3rem;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .emoji-btn:hover {
+            transform: scale(1.15);
+        }
+
+        .emoji-btn.selected {
+            transform: scale(1.25);
+        }
+
+        .btn-next {
+            margin-top: 1.5rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="container-form">
+
+        <h1 class="title">Avaliação da Loja</h1>
+        <p class="description-text">Escolha um emoji para cada item abaixo</p>
+
+        <form id="questionario">
+
+            <div class="question-card">
+                <h5 class="question-title">Letreiro / Marquise</h5>
+
+                <label class="fw-semibold">1. Apresentação</label>
+                <div class="emoji-options">
+                    <span class="emoji-btn">😁</span>
+                    <span class="emoji-btn">😔</span>
+                    <span class="emoji-btn">😡</span>
+                </div>
+
+                <label class="fw-semibold mt-3">2. Manutenção</label>
+                <div class="emoji-options">
+                    <span class="emoji-btn">😁</span>
+                    <span class="emoji-btn">😔</span>
+                    <span class="emoji-btn">😡</span>
+                </div>
+
+                <label class="fw-semibold mt-3">3. Iluminação</label>
+                <div class="emoji-options">
+                    <span class="emoji-btn">😁</span>
+                    <span class="emoji-btn">😔</span>
+                    <span class="emoji-btn">😡</span>
+                </div>
+            </div>
+
+            <!-- LOJA -->
+            <div class="question-card">
+                <h5 class="question-title">Loja</h5>
+
+                <label class="fw-semibold">1. Limpeza</label>
+                <div class="emoji-options">
+                    <span class="emoji-btn">😁</span>
+                    <span class="emoji-btn">😔</span>
+                    <span class="emoji-btn">😡</span>
+                </div>
+
+                <label class="fw-semibold mt-3">2. Iluminação</label>
+                <div class="emoji-options">
+                    <span class="emoji-btn">😁</span>
+                    <span class="emoji-btn">😔</span>
+                    <span class="emoji-btn">😡</span>
+                </div>
+
+                <label class="fw-semibold mt-3">3. Layout</label>
+                <div class="emoji-options">
+                    <span class="emoji-btn">😁</span>
+                    <span class="emoji-btn">😔</span>
+                    <span class="emoji-btn">😡</span>
+                </div>
+
+                <label class="fw-semibold mt-3">4. Comunicação Visual</label>
+                <div class="emoji-options">
+                    <span class="emoji-btn">😁</span>
+                    <span class="emoji-btn">😔</span>
+                    <span class="emoji-btn">😡</span>
+                </div>
+            </div>
+
+            <!-- GONDOLAS -->
+            <div class="question-card">
+                <h5 class="question-title">Gôndolas</h5>
+
+                <label class="fw-semibold">1. Limpeza</label>
+                <div class="emoji-options">
+                    <span class="emoji-btn">😁</span>
+                    <span class="emoji-btn">😔</span>
+                    <span class="emoji-btn">😡</span>
+                </div>
+
+                <label class="fw-semibold mt-3">2. Precificação</label>
+                <div class="emoji-options">
+                    <span class="emoji-btn">😁</span>
+                    <span class="emoji-btn">😔</span>
+                    <span class="emoji-btn">😡</span>
+                </div>
+
+                <label class="fw-semibold mt-3">3. Rupturas</label>
+                <div class="emoji-options">
+                    <span class="emoji-btn">😁</span>
+                    <span class="emoji-btn">😔</span>
+                    <span class="emoji-btn">😡</span>
+                </div>
+            </div>
+
+            <!-- BOTÃO -->
+            <button type="submit" class="btn-next" id="submitBtn">
+                Próximo
+            </button>
+
+        </form>
+
+    </main>
+
+</body>
+</html>
