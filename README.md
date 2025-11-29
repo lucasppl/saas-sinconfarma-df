@@ -69,6 +69,12 @@ Edite os seguintes arquivos conforme necessário:
 
 Dentro da pasta **backend**, execute:
 
+Abra o CMD dentro do diretório do backend e rode:
+
+    npm install (para evitar erros)
+
+Após isso, inicie o arquivo:
+
     iniciarBanco.bat
 
 Depois, na raiz do projeto, execute:
