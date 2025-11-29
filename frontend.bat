@@ -1,20 +1,62 @@
-echo [5/6] Ligando o Site (Frontend)...
-:: Usa npx http-server para servir a pasta raiz na porta 5500 (igual Live Server)
-:: --cors permite que o front fale com o back sem travar
-:: -c-1 desabilita cache para voce ver mudancas na hora
-start "SERVIDOR SITE (5500)" cmd /k "npx http-server -p 5500 -c-1 --cors"
+@echo off
+chcp 65001 >nul
+color 0D
+title Frontend - Servidor Web
 
-:: --- 4. ABRIR NAVEGADOR ---
-echo [6/6] Abrindo o Google Chrome...
+:: ============================================================
+::           INICIANDO SERVIDOR FRONTEND (SITE)
+:: ============================================================
+
+echo.
+echo ╔════════════════════════════════════════════════════════╗
+echo ║                                                        ║
+echo ║              🌐 SERVIDOR WEB - FRONTEND                ║
+echo ║                                                        ║
+echo ╚════════════════════════════════════════════════════════╝
+echo.
+
+:: --- 1. INICIAR SERVIDOR ---
+echo [1/2] Iniciando servidor HTTP (porta 5500)...
+echo     • Desabilitando cache para ver mudanças instantâneas
+echo     • Habilitando CORS para comunicação com backend
+echo.
+start "🌐 SERVIDOR SITE (5500)" cmd /k "color 0D && title FRONTEND - Servidor Web && npx http-server -p 5500 -c-1 --cors"
 timeout /t 3 >nul
+echo ✓ Servidor online em http://localhost:5500
+echo.
+
+:: --- 2. ABRIR NAVEGADOR ---
+echo [2/2] Abrindo navegador no Google Chrome...
+timeout /t 2 >nul
 start http://127.0.0.1:5500/html/login.html
 
+:: --- FINALIZAÇÃO ---
+cls
+color 0A
 echo.
-echo ========================================================
-echo                 SISTEMA ONLINE!
-echo ========================================================
+echo ╔════════════════════════════════════════════════════════╗
+echo ║                                                        ║
+echo ║            ✓ SERVIDOR FRONTEND ONLINE!                ║
+echo ║                                                        ║
+echo ╚════════════════════════════════════════════════════════╝
 echo.
-echo 1. Nao feche as duas janelas pretas que abriram.
-echo 2. Se quiser parar, feche as janelas.
+echo ┌────────────────────────────────────────────────────────┐
+echo │  🌐 SERVIDOR ATIVO:                                    │
+echo ├────────────────────────────────────────────────────────┤
+echo │                                                        │
+echo │  URL:  http://localhost:5500                          │
+echo │  Página: /html/login.html                             │
+echo │                                                        │
+echo └────────────────────────────────────────────────────────┘
+echo.
+echo ┌────────────────────────────────────────────────────────┐
+echo │  📌 INSTRUÇÕES:                                        │
+echo ├────────────────────────────────────────────────────────┤
+echo │                                                        │
+echo │  1. NÃO feche a janela roxa que abriu                 │
+echo │  2. Para parar, feche a janela ou Ctrl+C              │
+echo │  3. Cache desabilitado - mudanças aparecem na hora    │
+echo │                                                        │
+echo └────────────────────────────────────────────────────────┘
 echo.
 pause
