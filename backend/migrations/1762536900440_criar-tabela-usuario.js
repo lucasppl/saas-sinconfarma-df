@@ -1,8 +1,6 @@
 /* eslint-disable camelcase */
+import bcrypt from "bcryptjs"; // 1. Importar a biblioteca
 
-/**
- * @type {import('node-pg-migrate').ColumnDefinitions | undefined}
- */
 export const shorthands = undefined;
 
 /**
@@ -10,42 +8,34 @@ export const shorthands = undefined;
  * @param run {() => void | undefined}
  * @returns {Promise<void> | void}
  */
-export const up = (pgm) => {
+export const up = async (pgm) => {
+  // 2. Transformar em async
   console.log("Rodando migração UP: criando 'roles' e 'usuarios'...");
 
-  // CRIAR A TABELA 'roles'
-  // Usamos 'pgm.createTable' porque é um comando de ESTRUTURA (DDL).
-  // A ferramenta usa isso para saber como reverter (down) automaticamente.
+  // --- CRIAÇÃO DAS TABELAS ---
+
   pgm.createTable("roles", {
-    id: "id", // Atalho para 'SERIAL PRIMARY KEY'
+    id: "id",
     nome: { type: "varchar(50)", notNull: true, unique: true },
   });
 
-  // CRIAR A TABELA 'usuarios'
   pgm.createTable("usuarios", {
     id: "id",
     nome: { type: "varchar(100)", notNull: true },
     email: { type: "varchar(100)", notNull: true, unique: true },
     senha_hash: { type: "varchar(255)", notNull: true },
-
-    // CHAVE ESTRANGEIRA
-    // 'references' diz: "O valor aqui DEVE existir na coluna 'id' da tabela 'roles'"
     role_id: {
       type: "integer",
       notNull: true,
-      references: '"roles"(id)', // As aspas duplas em "roles" são por segurança
-      onDelete: "RESTRICT", // Impede apagar uma 'role' se um usuário a estiver usando
+      references: '"roles"(id)',
+      onDelete: "RESTRICT",
     },
   });
 
-  // Adicionar Timestamps
-  // Usamos 'pgm.addColumns' (outro comando de ESTRUTURA)
   pgm.addColumns("usuarios", {
     criado_em: {
       type: "timestamp",
       notNull: true,
-      // 'pgm.func()' é como 'current_timestamp' do PostgreSQL,
-      // não o TEXTO 'current_timestamp'"
       default: pgm.func("current_timestamp"),
     },
     atualizado_em: {
@@ -55,39 +45,29 @@ export const up = (pgm) => {
     },
   });
 
-  // SEMEAR O BANCO (Seeding)
-  // Usamos 'pgm.sql()' porque 'INSERT' é um comando de DADOS (DML),
-  // e a ferramenta não tem um assistente (como 'pgm.insert()') para isso.
-  //
-  // Usamos as crases (`) porque elas são 'Template Literals' do JavaScript.
-  // Elas permitem escrever strings com MÚLTIPLAS LINHAS,
-  // o que torna o SQL muito mais limpo e legível.
+  // --- INSERÇÃO DE DADOS (SEEDING) ---
+
   pgm.sql(`
     INSERT INTO "roles" (nome) VALUES
     ('admin'),
-    ('farmaceutico'),
     ('cliente');
   `);
 
+  // 3. GERAR O HASH DA SENHA
+  // Aqui definimos que a senha será '123456'. Você pode mudar se quiser.
+  const senhaPadrao = "123456";
+  const hash = await bcrypt.hash(senhaPadrao, 10);
+
+  // 4. INSERIR O USUÁRIO ERIVAN
+  // A variável ${hash} agora contém a senha criptografada
   pgm.sql(`
     INSERT INTO "usuarios" (nome, email, senha_hash, role_id) VALUES
-    ('Gabriel', 'teste01@gmail.com', 'hash_da_senha_01', 1),
-    ('Ana Clara', 'teste2@gmail.com', 'hash_da_senha_02', 2);
+    ('Erivan', 'erivan@gmail.com', '${hash}', 1);
   `);
 };
 
-/**
- * @param pgm {import('node-pg-migrate').MigrationBuilder}
- * @param run {() => void | undefined}
- * @returns {Promise<void> | void}
- */
 export const down = (pgm) => {
   console.log("Rodando migração DOWN: removendo 'roles' e 'usuarios'...");
-
-  // A ORDEM DO 'DOWN' DEVE SER O INVERSO EXATO DO 'UP'
-  // Apagar 'usuarios' PRIMEIRO (pois ela referencia 'roles')
   pgm.dropTable("usuarios");
-
-  // Apagar 'roles' DEPOIS
   pgm.dropTable("roles");
 };

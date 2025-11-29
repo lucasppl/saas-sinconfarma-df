@@ -11,6 +11,7 @@ body {
   justify-content: center;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   padding: 20px;
+  background-color: #f0f2f5; /* Fundo suave para contraste */
 }
 
 .container-form {
@@ -28,11 +29,13 @@ body {
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
+
 .step-indicator {
   display: flex;
   align-items: center;
@@ -76,13 +79,16 @@ h1 {
 }
 
 @keyframes bounce {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0);
   }
+
   50% {
     transform: translateY(-10px);
   }
 }
+
 .form-group {
   margin-bottom: 25px;
 }
@@ -101,7 +107,7 @@ h1 {
   width: 100%;
 }
 
-.file-input-wrapper input[type=file] {
+.file-input-wrapper input[type="file"] {
   display: none;
 }
 
@@ -136,6 +142,7 @@ h1 {
   border-radius: 12px;
   overflow: hidden;
   display: none;
+  border: 1px solid #ddd;
 }
 
 .file-preview.show {
@@ -222,20 +229,22 @@ h1 {
     padding: 25px 20px;
     border-radius: 15px;
   }
+
   h1 {
     padding-top: 20px;
     font-size: 24px;
   }
+
   .emoji-large {
     font-size: 60px;
     margin: 20px 0;
   }
+
   .step-indicator {
     margin-bottom: 20px;
   }
+
   .file-input-label {
     padding: 30px 15px;
   }
 }
-
-/*# sourceMappingURL=addPhoto.css.map */

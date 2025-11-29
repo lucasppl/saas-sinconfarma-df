@@ -1,68 +1,67 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
+  // Tenta achar o formulário
+  const formLogin = document.querySelector("form");
 
-    const form = document.getElementById('form-login');
-    const emailInput = document.getElementById('emailInput');
-    const senhaInput = document.getElementById('passwordInput');
-    const mensagemDiv = document.getElementById('login-mensagem');
-    const submitButton = document.getElementById('btn-submit');
+  // --- AQUI ESTAVA O ERRO ---
+  // Antes buscava por ID (#email), agora busca pelo TIPO do input
+  const emailInput = document.querySelector('input[type="email"]');
+  const passwordInput = document.querySelector('input[type="password"]');
 
-    const API_LOGIN_URL = 'http://localhost:8000/api/login';
+  // Verificação de segurança: Se não achou os elementos, para tudo e avisa no console
+  if (!formLogin || !emailInput || !passwordInput) {
+    console.error(
+      "ERRO CRÍTICO: O JavaScript não encontrou os campos de email ou senha no HTML."
+    );
+    console.log("Achou form?", !!formLogin);
+    console.log("Achou email?", !!emailInput);
+    console.log("Achou senha?", !!passwordInput);
+    return;
+  }
 
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
+  formLogin.addEventListener("submit", async (event) => {
+    event.preventDefault(); // Impede a página de recarregar
 
-        submitButton.disabled = true;
-        submitButton.textContent = 'Autenticando...';
-        mensagemDiv.textContent = '';
-        mensagemDiv.className = 'mt-3 text-center';
+    const email = emailInput.value;
+    const senha = passwordInput.value;
 
-        const dadosLogin = {
-            email: emailInput.value,
-            senha: senhaInput.value
-        };
+    if (!email || !senha) {
+      alert("Por favor, preencha todos os campos.");
+      return;
+    }
 
-        try {
-            const response = await fetch(API_LOGIN_URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(dadosLogin)
-            });
+    try {
+      console.log("Enviando dados para:", "http://localhost:8000/api/login");
 
-            const data = await response.json();
+      const response = await fetch("http://localhost:8000/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, senha }),
+      });
 
-            if (response.ok) {
+      const data = await response.json();
 
-                localStorage.setItem('usuario', JSON.stringify(data.usuario));
+      if (!response.ok) {
+        alert(data.error || "Erro ao fazer login");
+        return;
+      }
 
-                mensagemDiv.textContent = `Login bem-sucedido! Bem-vindo(a), ${data.usuario.nome}.`;
-                mensagemDiv.classList.add('text-success');
+      // --- SUCESSO ---
+      localStorage.setItem("usuario", JSON.stringify(data.usuario));
 
-                setTimeout(() => {
-                    window.location.href = 'usuario.html';
-                }, 1500);
+      // Lógica de Redirecionamento Baseada no Cargo (Role)
+      const userRole = data.usuario.role ? data.usuario.role.toLowerCase() : "";
+      console.log("Login OK! Cargo:", userRole);
 
-            } else {
-                throw new Error(data.error);
-            }
-
-        } catch (err) {
-            mensagemDiv.textContent = `Erro: ${err.message}`;
-            mensagemDiv.classList.add('text-danger');
-        } finally {
-            submitButton.disabled = false;
-            submitButton.textContent = 'Entrar';
-        }
-    });
-
-    const toggleButton = document.getElementById('togglePassword');
-    const passwordInput = document.getElementById('passwordInput');
-
-    toggleButton.addEventListener('click', () => {
-        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-        passwordInput.setAttribute('type', type);
-
-        toggleButton.classList.toggle('active');
-    });
+      if (userRole === "admin" || userRole === "administrador") {
+        window.location.href = "usuarios.html";
+      } else {
+        window.location.href = "usuario.html";
+      }
+    } catch (error) {
+      console.error("Erro na requisição:", error);
+      alert("Erro de conexão com o servidor. O Backend está rodando?");
+    }
+  });
 });

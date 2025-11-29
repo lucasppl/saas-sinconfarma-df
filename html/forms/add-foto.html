@@ -1,52 +1,58 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="../../img/logo.png" type="image/x-icon">
     <title>Avaliação da Loja</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../style/addPhoto.css">
-    <style>
-       
-    </style>
-</head>
-<body>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../style/addPhoto.css" />
+  </head>
+  <body>
     <div class="container-form">
+      <h1>Vamos começar!</h1>
+      <div class="emoji-large">📸</div>
+      <p class="description-text">
+        Adicione uma foto da loja para começarmos a avaliação
+      </p>
 
-        <h1>Vamos começar!</h1>
-        <div class="emoji-large">📸</div>
-        <p class="description-text">Adicione uma foto da loja para começarmos a avaliação</p>
-
-        <form id="photoForm">
-            <div class="form-group">
-                <label class="form-label">Foto da Fachada</label>
-                <div class="file-input-wrapper">
-                    <input 
-                        type="file" 
-                        id="photoInput" 
-                        accept="image/*"
-                        class="form-control"
-                    >
-                    <label for="photoInput" class="file-input-label">
-                        <span>Clique para fazer o upload da imagem</span>
-                    </label>
-                    <div class="file-preview" id="preview">
-                        <img id="previewImg" alt="Preview">
-                    </div>
-                    <div class="file-preview-actions" id="previewActions">
-                        <button type="button" class="btn-remove" id="removeBtn"> Remover Foto</button>
-                    </div>
-                </div>
+      <div id="photoForm">
+        <div class="form-group">
+          <label class="form-label">Foto da Fachada</label>
+          <div class="file-input-wrapper">
+            <input
+              type="file"
+              id="photoInput"
+              accept="image/*"
+              class="form-control"
+            />
+            <label for="photoInput" class="file-input-label">
+              <span>Clique para fazer o upload da imagem</span>
+            </label>
+            <div class="file-preview" id="preview">
+              <img id="previewImg" alt="Preview" />
             </div>
-            <p class="description-text2">OBS: Para fazer o upload, a foto deve estar na galeria do aparelho</p>
+            <div class="file-preview-actions" id="previewActions">
+              <button type="button" class="btn-remove" id="removeBtn">
+                Remover Foto
+              </button>
+            </div>
+          </div>
+        </div>
+        <p class="description-text2">
+          OBS: Para fazer o upload, a foto deve estar na galeria do aparelho
+        </p>
 
-            <button type="submit" class="btn-next" id="submitBtn" disabled>
-                Próximo Passo
-            </button>
-        </form>
+        <button type="button" class="btn-next" id="submitBtn" disabled>
+          Próximo Passo
+        </button>
+      </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="../../js/forms/addPhoto.js"></script>
-</body>
+  </body>
 </html>

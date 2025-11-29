@@ -3,12 +3,15 @@
 // ... (export const shorthands ... ) ...
 
 export const up = (pgm) => {
-  console.log("Rodando migração UP: Ajustando roles para Admin/Avaliador (v2 - CORRETA)...");
+  console.log(
+    "Rodando migração UP: Ajustando roles para Admin/Avaliador (v2 - CORRETA)..."
+  );
 
   pgm.sql("INSERT INTO roles (nome) VALUES ('avaliador');");
 
   const avaliadorRoleId = "(SELECT id FROM roles WHERE nome = 'avaliador')";
-  const farmaceuticoRoleId = "(SELECT id FROM roles WHERE nome = 'farmaceutico')";
+  const farmaceuticoRoleId =
+    "(SELECT id FROM roles WHERE nome = 'farmaceutico')";
   const clienteRoleId = "(SELECT id FROM roles WHERE nome = 'cliente')";
 
   pgm.sql(`

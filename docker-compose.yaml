@@ -16,16 +16,18 @@ services:
     restart: unless-stopped
 
   backend:
-    command: sh -c "npm run migrate && npm run dev"
+    command: sh -c "npm run migrate:up && npm run dev"
     build:
       context: ./backend
       dockerfile: Dockerfile
     container_name: trabalho_residencia
     ports:
       - "${BACKEND_PORT}:8000"
+
     volumes:
       - ./backend:/usr/src/app
-      - /usr/src/app/node_modules
+      - uploads-data:/usr/src/app/uploads
+
     environment:
       DB_HOST: database
       DB_PORT: 5432
@@ -48,7 +50,7 @@ services:
 
 volumes:
   db-data:
-    driver: local
+  uploads-data:
 
 networks:
   app-network:

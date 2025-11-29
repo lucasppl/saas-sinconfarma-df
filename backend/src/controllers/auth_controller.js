@@ -1,11 +1,11 @@
-import pool from '../config/db.js';
-import bcrypt from 'bcryptjs';
+import pool from "../config/db.js";
+import bcrypt from "bcryptjs";
 
 export const login = async (req, res) => {
   const { email, senha } = req.body;
 
   if (!email || !senha) {
-    return res.status(400).json({ error: 'Email e senha são obrigatórios' });
+    return res.status(400).json({ error: "Email e senha são obrigatórios" });
   }
 
   try {
@@ -15,7 +15,7 @@ export const login = async (req, res) => {
         u.nome,
         u.email,
         u.senha_hash,
-        u.ativo, -- Adicionado para o frontend saber o status
+        u.ativo,
         r.nome AS role_nome
       FROM
         usuarios u
@@ -28,12 +28,12 @@ export const login = async (req, res) => {
 
     // Se o usuário não for encontrado
     if (result.rows.length === 0) {
-      return res.status(401).json({ error: 'Usuário ou senha inválidos' });
+      return res.status(401).json({ error: "Usuário ou senha inválidos" });
     }
     const user = result.rows[0];
 
     if (!user.ativo) {
-      return res.status(403).json({ error: 'Este usuário está inativo.' });
+      return res.status(403).json({ error: "Este usuário está inativo." });
     }
 
     // Compara a senha do formulário com o HASH do banco
@@ -41,21 +41,20 @@ export const login = async (req, res) => {
 
     // Se a senha estiver errada
     if (!senhaValida) {
-      return res.status(401).json({ error: 'Usuário ou senha inválidos' });
+      return res.status(401).json({ error: "Usuário ou senha inválidos" });
     }
 
     return res.status(200).json({
-      message: 'Login bem-sucedido!',
+      message: "Login bem-sucedido!",
       usuario: {
         id: user.id,
         nome: user.nome,
         email: user.email,
-        role: user.role_nome
-      }
+        role: user.role_nome,
+      },
     });
-
   } catch (err) {
-    console.error('Erro no login:', err);
-    res.status(500).json({ error: 'Erro interno no servidor.' });
+    console.error("Erro no login:", err);
+    res.status(500).json({ error: "Erro interno no servidor." });
   }
 };

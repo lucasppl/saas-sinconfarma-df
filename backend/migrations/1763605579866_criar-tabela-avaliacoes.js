@@ -33,6 +33,8 @@ export const up = (pgm) => {
     },
     observacoes_gerais: { type: "text" },
     pontuacao_final: { type: "decimal(5, 2)" },
+
+    foto_url: { type: "text" },
   });
 };
 

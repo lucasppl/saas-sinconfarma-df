@@ -1,201 +1,275 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Identificação da Loja</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="../../img/logo.png" type="image/x-icon">
+    <title>Identificação da Loja</title>
 
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
 
-  <style>
-
-    /* ESTILO BASE — mesmo da página addPhoto */
-    body {
-      background: #f5f5f5;
-      font-family: "Inter", sans-serif;
-      padding: 20px;
-    }
-
-    .cnpj-container {
-      max-width: 550px;
-      margin: 40px auto;
-      padding: 2.5rem;
-      background: #fff;
-      border-radius: 18px;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
-      text-align: center;
-      animation: fadeIn .35s ease-in-out;
-    }
-
-    .cnpj-title {
-      color: #0d5c3d;
-      font-weight: 700;
-      font-size: 1.9rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .description-text {
-      color: #444;
-      font-size: 1rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .input-cnpj {
-      height: 54px;
-      font-size: 1.2rem;
-      text-align: center;
-      border-radius: 14px;
-      border: 1.8px solid #d9d9d9;
-      transition: 0.2s;
-    }
-
-    .input-cnpj:focus {
-      border-color: #14784c;
-      box-shadow: 0 0 0 2px rgba(20, 120, 76, 0.15);
-    }
-
-    /* RESULTADO DA CONSULTA */
-    #resultado {
-      margin-top: 20px;
-      padding: 18px;
-      border-radius: 16px;
-      background: #f0f0f0;
-      text-align: left;
-      font-size: 1rem;
-      line-height: 1.5rem;
-      display: none;
-    }
-
-    .erro {
-      color: #b30000;
-      font-weight: bold;
-    }
-
-    /* BOTÃO */
-    .btn-next {
-      width: 100%;
-      margin-top: 1.5rem;
-      padding: 1rem;
-      background: #14784c;
-      border-radius: 16px;
-      border: none;
-      color: #fff;
-      font-size: 1.15rem;
-      font-weight: 600;
-      transition: 0.25s ease;
-    }
-
-    .btn-next:hover {
-      background: #0d5c3d;
-    }
-
-    /* Suavidade */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-  </style>
-
-</head>
-
-<body>
-
-  <main class="cnpj-container">
-
-    <h1 class="cnpj-title">Identificação da Loja</h1>
-    <p class="description-text">Digite o CNPJ para continuar a avaliação</p>
-
-    <!-- Campo CNPJ -->
-    <input 
-      id="cnpj" 
-      class="form-control input-cnpj"
-      placeholder="00.000.000/0000-00" 
-      maxlength="18"
-      oninput="mascaraCNPJ(this)"
-    >
-
-    <!-- Botão -->
-    <button id="btn" class="btn-next mt-3" onclick="buscarCNPJ()">
-      Buscar
-    </button>
-
-    <!-- Resultado da API -->
-    <div id="resultado"></div>
-
-  </main>
-
-  <script>
-    function mascaraCNPJ(input) {
-      let value = input.value.replace(/\D/g, "");
-      if (value.length > 14) value = value.slice(0, 14);
-      value = value.replace(/^(\d{2})(\d)/, "$1.$2");
-      value = value.replace(/^(\d{2}\.\d{3})(\d)/, "$1.$2");
-      value = value.replace(/^(\d{2}\.\d{3}\.\d{3})(\d)/, "$1/$2");
-      value = value.replace(/(\d{4})(\d)/, "$1-$2");
-      input.value = value;
-    }
-
-    function isValidCnpj(cnpj) {
-      if (!/^\d{14}$/.test(cnpj)) return false;
-      if (/^(\d)\1{13}$/.test(cnpj)) return false;
-      return true;
-    }
-
-    async function buscarCNPJ() {
-      const button = document.getElementById("btn");
-      const output = document.getElementById("resultado");
-      const cnpjInput = document.getElementById("cnpj").value;
-      const cnpj = cnpjInput.replace(/\D/g, "");
-
-      output.style.display = "none";
-      output.innerHTML = "";
-
-      if (!isValidCnpj(cnpj)) {
-        output.style.display = "block";
-        output.innerHTML = `<p class="erro">CNPJ inválido.</p>`;
-        return;
+    <style>
+      body {
+        background: #f0f2f5;
+        font-family: "Segoe UI", sans-serif;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
       }
 
-      button.disabled = true;
-      button.innerText = "Consultando...";
+      .cnpj-container {
+        max-width: 500px;
+        width: 100%;
+        padding: 2.5rem;
+        background: #fff;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
 
-      try {
-        const response = await fetch(`https://brasilapi.com.br/api/cnpj/v1/${cnpj}`);
+      .cnpj-title {
+        color: #2962ff; /* Azul */
+        font-weight: 700;
+        font-size: 1.8rem;
+        margin-bottom: 0.5rem;
+      }
 
-        if (!response.ok) {
+      .description-text {
+        color: #666;
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .input-cnpj {
+        height: 54px;
+        font-size: 1.2rem;
+        text-align: center;
+        border-radius: 12px;
+        border: 2px solid #e0e0e0;
+        transition: 0.3s;
+      }
+
+      .input-cnpj:focus {
+        border-color: #2962ff;
+        box-shadow: 0 0 0 4px rgba(41, 98, 255, 0.1);
+        outline: none;
+      }
+
+      /* RESULTADO DA CONSULTA */
+      #resultado {
+        margin-top: 20px;
+        padding: 15px;
+        border-radius: 12px;
+        background: #f8f9fa;
+        text-align: left;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        display: none;
+        border: 1px solid #eee;
+      }
+
+      .erro {
+        color: #d32f2f;
+        font-weight: bold;
+        text-align: center;
+      }
+
+      /* BOTÕES */
+      .btn-action {
+        width: 100%;
+        margin-top: 1rem;
+        padding: 1rem;
+        border-radius: 12px;
+        border: none;
+        color: #fff;
+        font-size: 1.1rem;
+        font-weight: 600;
+        transition: 0.2s ease;
+        cursor: pointer;
+      }
+
+      .btn-buscar {
+        background: #2962ff;
+      }
+      .btn-buscar:hover {
+        background: #1e4ed8;
+        transform: translateY(-2px);
+      }
+
+      .btn-confirmar {
+        background: #00c853; /* Verde para confirmar */
+        display: none; /* Escondido até achar a loja */
+        margin-top: 15px;
+      }
+      .btn-confirmar:hover {
+        background: #009624;
+        transform: translateY(-2px);
+      }
+    </style>
+  </head>
+
+  <body>
+    <main class="cnpj-container">
+      <h1 class="cnpj-title">Qual é a Loja?</h1>
+      <p class="description-text">
+        Digite o CNPJ para buscar os dados na Receita
+      </p>
+
+      <input
+        id="cnpj"
+        class="form-control input-cnpj"
+        placeholder="00.000.000/0000-00"
+        maxlength="18"
+        oninput="mascaraCNPJ(this)"
+      />
+
+      <button
+        id="btn-buscar"
+        class="btn-action btn-buscar"
+        onclick="buscarCNPJ()"
+      >
+        🔍 Buscar CNPJ
+      </button>
+
+      <div id="resultado"></div>
+
+      <button id="btn-confirmar" class="btn-action btn-confirmar">
+        ✅ É essa! Iniciar Avaliação
+      </button>
+    </main>
+
+    <script>
+      // Variável para guardar os dados temporariamente
+      let dadosFarmaciaEncontrada = null;
+
+      function mascaraCNPJ(input) {
+        let value = input.value.replace(/\D/g, "");
+        if (value.length > 14) value = value.slice(0, 14);
+        value = value.replace(/^(\d{2})(\d)/, "$1.$2");
+        value = value.replace(/^(\d{2}\.\d{3})(\d)/, "$1.$2");
+        value = value.replace(/^(\d{2}\.\d{3}\.\d{3})(\d)/, "$1/$2");
+        value = value.replace(/(\d{4})(\d)/, "$1-$2");
+        input.value = value;
+      }
+
+      function isValidCnpj(cnpj) {
+        if (!/^\d{14}$/.test(cnpj)) return false;
+        // Validação simples de tamanho
+        return true;
+      }
+
+      async function buscarCNPJ() {
+        const btnBuscar = document.getElementById("btn-buscar");
+        const btnConfirmar = document.getElementById("btn-confirmar");
+        const output = document.getElementById("resultado");
+
+        const cnpjInput = document.getElementById("cnpj").value;
+        const cnpjLimpo = cnpjInput.replace(/\D/g, "");
+
+        output.style.display = "none";
+        btnConfirmar.style.display = "none";
+        output.innerHTML = "";
+
+        if (!isValidCnpj(cnpjLimpo)) {
           output.style.display = "block";
-          output.innerHTML = `<p class="erro">CNPJ não encontrado.</p>`;
+          output.innerHTML = `<p class="erro">CNPJ incompleto ou inválido.</p>`;
           return;
         }
 
-        const data = await response.json();
+        btnBuscar.disabled = true;
+        btnBuscar.innerText = "Consultando Receita...";
 
-        output.style.display = "block";
-        output.innerHTML = `
-          <p><strong>Razão Social:</strong> ${data.razao_social}</p>
-          <p><strong>Nome Fantasia:</strong> ${data.nome_fantasia || "Não informado"}</p>
-          <p><strong>Telefone:</strong> ${data.telefone || "Não informado"}</p>
-          <p><strong>Endereço:</strong><br>
-            ${data.logradouro}, ${data.numero} - ${data.bairro}<br>
-            ${data.municipio} - ${data.uf}
-          </p>
-        `;
+        try {
+          // 1. Busca na API Pública
+          const response = await fetch(
+            `https://brasilapi.com.br/api/cnpj/v1/${cnpjLimpo}`
+          );
 
-    
-        setTimeout(() => {
-          window.location.href = "questionario.html"; 
-        }, 5200);
+          if (!response.ok) {
+            output.style.display = "block";
+            output.innerHTML = `<p class="erro">CNPJ não encontrado na base.</p>`;
+            return;
+          }
 
-      } catch (error) {
-        output.style.display = "block";
-        output.innerHTML = `<p class="erro">Erro de conexão. Tente novamente.</p>`;
-      } finally {
-        button.disabled = false;
-        button.innerText = "Buscar";
+          const data = await response.json();
+
+          // Guarda os dados na memória para usar no botão confirmar
+          dadosFarmaciaEncontrada = {
+            cnpj: cnpjLimpo,
+            nome: data.nome_fantasia || data.razao_social,
+            endereco: `${data.logradouro}, ${data.numero} - ${data.bairro}, ${data.municipio}/${data.uf}`,
+            telefone: data.ddd_telefone_1 || "",
+          };
+
+          // Mostra na tela
+          output.style.display = "block";
+          output.innerHTML = `
+            <div style="color: #333;">
+                <p style="margin-bottom:5px"><strong>${data.razao_social}</strong></p>
+                <p style="font-size:0.9rem; color:#666;">${dadosFarmaciaEncontrada.endereco}</p>
+                <span style="background:#e3f2fd; color:#1565c0; padding:4px 8px; border-radius:4px; font-size:0.8rem;">
+                    Situação: ${data.descricao_situacao_cadastral}
+                </span>
+            </div>
+          `;
+
+          // Libera o botão de avançar
+          btnConfirmar.style.display = "block";
+        } catch (error) {
+          console.error(error);
+          output.style.display = "block";
+          output.innerHTML = `<p class="erro">Erro ao conectar. Verifique internet.</p>`;
+        } finally {
+          btnBuscar.disabled = false;
+          btnBuscar.innerText = "🔍 Buscar Outro";
+        }
       }
-    }
-  </script>
 
-</body>
+      // --- AÇÃO DO BOTÃO CONFIRMAR ---
+      document
+        .getElementById("btn-confirmar")
+        .addEventListener("click", async () => {
+          if (!dadosFarmaciaEncontrada) return;
+
+          const btn = document.getElementById("btn-confirmar");
+          btn.innerText = "Registrando...";
+          btn.disabled = true;
+
+          try {
+            // 2. Envia para o SEU Backend para pegar o ID real
+            const response = await fetch(
+              "http://localhost:8000/api/farmacias/check-cnpj",
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(dadosFarmaciaEncontrada),
+              }
+            );
+
+            const data = await response.json();
+
+            if (response.ok && data.id) {
+              // SUCESSO! Temos o ID do banco de dados (ex: 5)
+              alert(`Loja "${data.nome}" selecionada!`);
+
+              // Redireciona passando o ID correto
+              window.location.href = `questionario.html?farmaciaId=${data.id}`;
+            } else {
+              alert("Erro ao registrar loja no sistema.");
+            }
+          } catch (e) {
+            console.error(e);
+            alert("Erro de conexão com o seu servidor backend.");
+          } finally {
+            btn.innerText = "✅ É essa! Iniciar Avaliação";
+            btn.disabled = false;
+          }
+        });
+    </script>
+  </body>
 </html>
