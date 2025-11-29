@@ -119,4 +119,9 @@ Projeto desenvolvido pela **Squad 09**:
 -   **Gabriel Enrico Oliveira Sousa**
 -   **Pablo Henrique Anastácio de Souza**
 -   **Guilherme Ryan Rodrigues Calazans**
+-   **Gustavo Almeida de Sousa**
 -   **Gustavo Aguilar Barrionuevo**
+-   **Bruno de França Vieira**
+-   **Gustavo Silva dos Santos**
+-   **Lucas Alves**
+-   **Felipe Ribeiro**
