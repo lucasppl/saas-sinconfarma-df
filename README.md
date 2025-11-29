@@ -85,7 +85,7 @@ Depois, na raiz do projeto, execute:
 
 ### 💻 4.1 Acessar o painel administrativo
 
-Se tudo rodou como esperado, para testar o sistema entre no painel administrativo com o login
+Se tudo rodou como esperado, para testar o sistema, entre no painel administrativo com o login
 
     email: erivan@gmail.com
     senha: 123456
